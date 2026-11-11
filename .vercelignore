@@ -1,9 +1,5 @@
 node_modules
-frontend/node_modules
-frontend/dist
 .env
 backend/.env
 backend/venv
 backend/.venv
-supabase
-.github
