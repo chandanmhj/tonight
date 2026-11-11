@@ -1,0 +1,9 @@
+{
+  "name": "Tonight: what to watch on your OTT apps",
+  "short_name": "Tonight",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0b432",
+  "theme_color": "#f0b432",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

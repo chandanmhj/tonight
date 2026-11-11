@@ -1,0 +1,24 @@
+# Fills and refreshes your Supabase movie library. Vercel can't run long jobs, so this does.
+# Add these in GitHub: Settings -> Secrets and variables -> Actions -> New repository secret:
+#   TMDB_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
+name: Fill movie library
+on:
+  schedule:
+    - cron: "30 20 * * *"    # every day, 2:00 AM India time
+  workflow_dispatch: {}
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: pip, cache-dependency-path: backend/requirements.txt }
+      - run: pip install -r backend/requirements.txt
+      - name: Run fetcher (resumable, stops cleanly after 5h)
+        working-directory: backend
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: timeout -s INT 300m python fetcher.py run --from-year 2010 || true
